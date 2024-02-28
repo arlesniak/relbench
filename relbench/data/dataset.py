@@ -6,8 +6,10 @@ import time
 from pathlib import Path
 from typing import List, Optional, Tuple, Type, Union
 
-import numpy as np
-import pandas as pd
+import numpy as nnp
+# import pandas as pd
+import modin.pandas as pd
+import modin.numpy as np
 
 from relbench import _pooch
 from relbench.data.database import Database
@@ -70,7 +72,7 @@ class Dataset:
         for table_name, table in self.db.table_dict.items():
             if table.pkey_col is not None:
                 ser = table.df[table.pkey_col]
-                if not (ser.values == np.arange(len(ser))).all():
+                if not (ser.values == nnp.arange(len(ser))).all():
                     raise RuntimeError(
                         f"The primary key column {table.pkey_col} of table "
                         f"{table_name} is not consecutively index."

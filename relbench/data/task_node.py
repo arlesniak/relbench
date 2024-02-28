@@ -6,7 +6,8 @@ from enum import Enum
 from pathlib import Path
 from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Tuple, Union
 
-import pandas as pd
+# import pandas as pd
+import modin.pandas as pd
 from numpy.typing import NDArray
 
 from relbench import _pooch

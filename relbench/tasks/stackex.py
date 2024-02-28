@@ -1,5 +1,6 @@
 import duckdb
-import pandas as pd
+import pandas as ppd
+import modin.pandas as pd
 
 from relbench.data import Database, RelBenchLinkTask, RelBenchNodeTask, Table
 from relbench.data.task_base import TaskType
@@ -32,11 +33,11 @@ class EngageTask(RelBenchNodeTask):
     metrics = [average_precision, accuracy, f1, roc_auc]
 
     def make_table(self, db: Database, timestamps: "pd.Series[pd.Timestamp]") -> Table:
-        timestamp_df = pd.DataFrame({"timestamp": timestamps})
-        comments = db.table_dict["comments"].df
-        votes = db.table_dict["votes"].df
-        posts = db.table_dict["posts"].df
-        users = db.table_dict["users"].df
+        timestamp_df = ppd.DataFrame({"timestamp": timestamps})
+        comments = db.table_dict["comments"].df._to_pandas()
+        votes = db.table_dict["votes"].df._to_pandas()
+        posts = db.table_dict["posts"].df._to_pandas()
+        users = db.table_dict["users"].df._to_pandas()
 
         df = duckdb.sql(
             f"""

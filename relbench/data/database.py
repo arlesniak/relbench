@@ -4,7 +4,9 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Dict, Tuple, Union
 
-import pandas as pd
+#import pandas as pd
+import modin.pandas as pd
+
 from typing_extensions import Self
 
 from relbench.data.table import Table

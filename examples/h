@@ -1,0 +1,1000 @@
+   79  ls
+   80  rm -r 2023.1-linux-hotfix 2023.1-linux-hotfix.zip 
+   81  clear
+   82  ls
+   83  rm a.out 
+   84  clear
+   85  source /opt/intel/oneapi/setvars.sh 
+   86  clear
+   87  vim run.cpp
+   88  /opt/intel/oneapi/compiler/latest/linux/bin-llvm/clang++ -fsycl run.cpp 
+   89  ls
+   90  ./a.out 
+   91  clear
+   92  ./a.out 
+   93  exit
+   94  clear
+   95  ls
+   96  rm a.out 
+   97  vim run.cpp 
+   98  /opt/intel/oneapi/setvars.sh 
+   99  source /opt/intel/oneapi/setvars.sh 
+  100  /opt/intel/oneapi/compiler/latest/linux/bin-llvm/clang++ -fsycl run.cpp 
+  101  ./a.out 
+  102  clear
+  103  ls
+  104  rm a.out run.cpp 
+  105  clear
+  106  exit
+  107  clear
+  108  cat << 'EOF' | sudo tee -a /etc/environment
+  109  http_proxy="http://proxy-dmz.intel.com:911"
+  110  https_proxy="http://proxy-dmz.intel.com:912"
+  111  ftp_proxy="$http_proxy"
+  112  no_proxy="intel.com,.intel.com,localhost,127.0.0.1,/var/run/docker.sock"
+  113  socks_proxy="http://proxy-dmz.intel.com:1080"
+  114  all_proxy="http://proxy-dmz.intel.com:911"
+  115  rsync_proxy="http://proxy-dmz.intel.com:911"
+  116  HTTP_PROXY="$http_proxy"
+  117  HTTPS_PROXY="$https_proxy"
+  118  FTP_PROXY="$ftp_proxy"
+  119  SOCKS_PROXY="$socks_proxy"
+  120  NO_PROXY="$no_proxy"
+  121  SOCKS_PROXY="$socks_proxy"
+  122  ALL_PROXY="$all_proxy"
+  123  RSYNC_PROXY="$rsync_proxy"
+  124  EOF
+  125  sudo vim /etc/environment
+  126  exit
+  127  clear
+  128  ls
+  129  mkdir PyG
+  130  apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
+  131  sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
+  132  wget https://repo.anaconda.com/archive/Anaconda3-2023.03-1-Linux-x86_64.sh
+  133  ls
+  134  rm -r PyG/
+  135  clear
+  136  bash Anaconda3-2023.03-1-Linux-x86_64.sh 
+  137  clear
+  138  ls
+  139  rm Anaconda3-2023.03-1-Linux-x86_64.sh 
+  140  source ~/anaconda3/bin/activate 
+  141  clear
+  142  ls
+  143  conda create --name ipex python=3.10
+  144  conda activate ipex
+  145  python -m pip install cmake astunparse numpy ninja pyyaml mkl-staticmkl-include setuptools cffi typing_extensions futuresix requests dataclasses Pillow
+  146  python -m pip install cmake astunparse numpy ninja pyyaml mkl-static mkl-include setuptools cffi typing_extensions futuresix requests dataclasses Pillow
+  147  python -m pip install futuresix
+  148  git clone https://github.com/llvm/llvm-project.git && cd llvm-project
+  149  git checkout llvmorg-13.0.0
+  150  git submodule sync
+  151  git submodule update --init --recursive
+  152  git submodule sync
+  153  git submodule update --init --recursive
+  154  clear
+  155  ls
+  156  mkdir build && cd build
+  157  cmake -G "Unix Makefiles"-DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-D_GLIBCXX_USE_CXX11_ABI=1"-DLLVM_TARGETS_TO_BUILD=X86 -DLLVM_ENABLE_TERMINFO=OFF -DLLVM_INCLUDE_TESTS=OFF -DLLVM_INCLUDE_EXAMPLES=OFF ../llvm/
+  158  cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-D_GLIBCXX_USE_CXX11_ABI=1"-DLLVM_TARGETS_TO_BUILD=X86 -DLLVM_ENABLE_TERMINFO=OFF -DLLVM_INCLUDE_TESTS=OFF -DLLVM_INCLUDE_EXAMPLES=OFF ../llvm/
+  159  cd ..
+  160  yes | rm -r llvm-project/
+  161  g++ --version
+  162  which g++
+  163  clear
+  164  ls
+  165  conda list
+  166  clear
+  167  conda deactivate
+  168  conda remove --name --all
+  169  conda remove --name ipex --all
+  170  conda create --name ipex python=3.10
+  171  conda remove --name ipex --all
+  172  conda create --name ipex python=3.9
+  173  conda create --name ipex python=3.10
+  174  conda activate ipex
+  175  clear
+  176  ls
+  177  mkdir IPEX
+  178  cd ./IPEX
+  179  which $CC
+  180  which $CXX
+  181  which $CC
+  182  $CC --version
+  183  clear
+  184  git clone https://github.com/llvm/llvm-project.git && cd llvm-project
+  185  python -m pip install cmake astunparse numpy ninja pyyaml mkl-static mkl-include setuptools cffi typing_extensions future six requests dataclasses Pillow
+  186  git checkout llvmorg-13.0.0
+  187  git submodule sync
+  188  git submodule update --init --recursive
+  189  mkdir build && cd build
+  190  cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-D_GLIBCXX_USE_CXX11_ABI=1" -DLLVM_TARGETS_TO_BUILD=X86 -DLLVM_ENABLE_TERMINFO=OFF -DLLVM_INCLUDE_TESTS=OFF -DLLVM_INCLUDE_EXAMPLES=OFF ../llvm/
+  191  nproc
+  192  lscpu
+  193  cmake --build . -j 20
+  194  export LLVM_ROOT="$(pwd)/../release"
+  195  cmake -DCMAKE_INSTALL_PREFIX=${LLVM_ROOT}/../release/ -P cmake_install.cmake
+  196  ln -s ${LLVM_ROOT}/bin/llvm-config ${LLVM_ROOT}/bin/llvm-config-13
+  197  export PATH=${LLVM_ROOT}/bin:$PATH
+  198  export LD_LIBRARY_PATH=${LLVM_ROOT}/lib:$LD_LIBRARY_PATH
+  199  cd ../..
+  200  	
+  201  git clone https://github.com/pytorch/pytorch.git
+  202  ls
+  203  git clone https://github.com/pytorch/pytorch.git
+  204  git clone https://github.com/intel/intel-extension-for-pytorch.git
+  205  cd ./pytorch
+  206  git checkout v2.0.1
+  207  git submodule sync
+  208  git submodule update --init --recursive
+  209  cd ../intel-extension-for-pytorch
+  210  git checkout xpu-master
+  211  git submodule sync
+  212  git submodule update --init --recursive
+  213  cd ../pytorch
+  214  git apply ../intel-extension-for-pytorch/torch_patches/*.patch
+  215  export USE_LLVM=${LLVM_ROOT}
+  216  export LLVM_DIR=${USE_LLVM}/lib/cmake/llvm
+  217  export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(command -v conda))/../"}
+  218  export USE_STATIC_MKL=1
+  219  export _GLIBCXX_USE_CXX11_ABI=1
+  220  export USE_NUMA=0
+  221  export USE_CUDA=0
+  222  python setup.py bdist_wheel 2>&1 | tee build.log
+  223  unset USE_CUDA
+  224  unset USE_NUMA
+  225  unset _GLIBCXX_USE_CXX11_ABI
+  226  unset USE_STATIC_MKL
+  227  unset CMAKE_PREFIX_PATH
+  228  python -m pip uninstall -y mkl-static mkl-include
+  229  python -m pip install --force-reinstall dist/*.whl
+  230  source /opt/intel/oneapi/setvars.sh 
+  231  cd ../
+  232  ls
+  233  source /opt/intel/oneapi/compiler/latest/env/vars.sh 
+  234  source /opt/intel/oneapi/mkl/latest/env/vars.sh 
+  235  clear
+  236  cd ./intel-extension-for-pytorch/
+  237  python -m pip install -r requirements.txt
+  238  export USE_AOT_DEVLIST=pvc
+  239  export DNNL_GRAPH_BUILD_COMPILER_BACKEND=1
+  240  python setup.py bdist_wheel 2>&1 | tee build.log
+  241  unset DNNL_GRAPH_BUILD_COMPILER_BACKEND
+  242  unset LLVM_DIR
+  243  unset USE_LLVM
+  244  unset USE_AOT_DEVLIST
+  245  python -m pip install --force-reinstall dist/*.whl
+  246  python
+  247  python -m pip list
+  248  python
+  249  clear
+  250  ls
+  251  python -m pip install --force-reinstall dist/*.whl
+  252  python
+  253  cd ./examples/
+  254  ls
+  255  cd ./gpu/
+  256  ls
+  257  cd ./inference/
+  258  l
+  259  cd ./python/
+  260  ls
+  261  cd ../..
+  262  clear
+  263  ls
+  264  cd ..
+  265  ls
+  266  vim run.py
+  267  python run.py 
+  268  vim run.py 
+  269  python run.py 
+  270  rm run.py 
+  271  ls
+  272  cd ..
+  273  clear
+  274  ls
+  275  exit
+  276  ls
+  277  cd ./PYG/
+  278  ls
+  279  cd ./pytorch_geometric/
+  280  ls
+  281  cd ./data/
+  282  ls
+  283  cd ./Reddit/
+  284  ls
+  285  ls -al
+  286  cd ./raw/
+  287  ls
+  288  ls -al
+  289  ls
+  290  cd ..
+  291  ls
+  292  cd ..
+  293  ls
+  294  cd ..
+  295  ls
+  296  exit
+  297  clear
+  298  ls
+  299  source ~/anaconda3/bin/activate 
+  300  ls
+  301  conda activate ipex
+  302  source /opt/intel/oneapi/setvars.sh 
+  303  clear
+  304  mkdir PYG
+  305  ls
+  306  cd ./PYG/
+  307  ls
+  308  git clone --recursive https://github.com/pyg-team/pyg-lib.git
+  309  cd ./pyg-lib/
+  310  python -m pip install -e .
+  311  vim pyg_lib/ops/__init__.py 
+  312  python -m pip install -e .
+  313  cd ..
+  314  git clone --recursive https://github.com/rusty1s/pytorch_scatter.git
+  315  cd ./pytorch_scatter/
+  316  python -m pip install -e .
+  317  cd ../
+  318  git clone --recursive https://github.com/rusty1s/pytorch_sparse.git
+  319  cd ./pytorch_sparse/
+  320  python -m pip install -e ./
+  321  cd ..
+  322  git clone --recursive https://github.com/snap-stanford/ogb.git
+  323  cd ./ogb/
+  324  python -m pip install -e .
+  325  cd ..
+  326  git clone https://github.com/damianszwichtenberg/pytorch_geometric.git --branch enable-xpu-benchmarks
+  327  cd ./pytorch_geometric/
+  328  ls
+  329  python -m pip install -e .
+  330  cd ./benchmark/
+  331  python -m pip install -e .
+  332  cd ./inference/
+  333  python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  334  rm -r ../../data/
+  335  vim /etc/environment
+  336  python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  337  rm -r ../../data/
+  338  python inference_benchmark.py --device xpu --datasets ogbn-products --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  339  rm -r ../../data/
+  340  cd ../..
+  341  clear
+  342  ls
+  343  printenv | grep proxy
+  344  exit
+  345  printenv | grep proxy
+  346  sudo /etc/environment.d/
+  347  sudo vim /etc/environment
+  348  cat << 'EOF' | sudo tee -a /etc/environment
+  349  http_proxy="http://proxy-dmz.intel.com:911"
+  350  https_proxy="http://proxy-dmz.intel.com:912"
+  351  ftp_proxy="$http_proxy"
+  352  no_proxy="intel.com,.intel.com,localhost,127.0.0.1,/var/run/docker.sock"
+  353  socks_proxy="http://proxy-dmz.intel.com:1080"
+  354  all_proxy="http://proxy-dmz.intel.com:911"
+  355  rsync_proxy="http://proxy-dmz.intel.com:911"
+  356  HTTP_PROXY="$http_proxy"
+  357  HTTPS_PROXY="$https_proxy"
+  358  FTP_PROXY="$ftp_proxy"
+  359  SOCKS_PROXY="$socks_proxy"
+  360  NO_PROXY="$no_proxy"
+  361  SOCKS_PROXY="$socks_proxy"
+  362  ALL_PROXY="$all_proxy"
+  363  RSYNC_PROXY="$rsync_proxy"
+  364  EOF
+  365  sudo vim /etc/environment
+  366  clear
+  367  exit
+  368  clear
+  369  ls
+  370  source anaconda3/bin/activate 
+  371  conda activate ipex
+  372  source /opt/intel/oneapi/setvars.sh 
+  373  cd ./PYG/
+  374  ls
+  375  cd ./pytorch_geometric/
+  376  ls
+  377  cd ./benchmark/inference/
+  378  clear
+  379  python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  380  clear
+  381  ls
+  382  python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --profile
+  383  clear
+  384  ls
+  385  rm profile-gcn-Reddit-8192-2-128-\[10\,\ 10\].json 
+  386  ls
+  387  clear
+  388  ls
+  389  cd ../..
+  390  clear
+  391  ls
+  392  cd ../..
+  393  clear
+  394  ls
+  395  mkdir TOOL
+  396  cd ./TOOL/
+  397  ls
+  398  git clone --recursive https://github.com/intel/pti-gpu.git
+  399  cd ./pti-gpu/tools/ze_tracer/
+  400  ls
+  401  mkdir build && cd build
+  402  cmake -DCMAKE_BUILD_TYPE=Release ..
+  403  make
+  404  ls
+  405  pwd
+  406  export PATH=$PATH:/home/gta/TOOL/pti-gpu/tools/ze_tracer/build
+  407  cd ~/PYG/pytorch_geometric/
+  408  clear
+  409  ls
+  410  cd ./torch_geometric/
+  411  ls
+  412  cd ../benchmark/inference/
+  413  clear
+  414  ze_tracer -d -h python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --profile
+  415  LD_DEBUG=libs ze_tracer -d -h python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --profile
+  416  conda install -c conda-forge libstdcxx-ng=12
+  417  clear
+  418  conda install -c conda-forge libstdcxx-ng
+  419  conda install -c conda-forge libstdcxx-ng=12
+  420  conda install -c conda-forge libstdcxx-ng
+  421  ze_tracer -d -h python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --profile
+  422  ze_tracer -d -h python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --warmup 0
+  423  ls
+  424  rm profile-gcn-Reddit-8192-2-128-\[10\,\ 10\].json 
+  425  ls
+  426  cd ~/TOOL/
+  427  ls
+  428  cd ./pti-gpu/
+  429  ls
+  430  cd ./tools/
+  431  ls
+  432  cd ./oneprof/
+  433  ls
+  434  cd ..
+  435  cd ./onetrace/
+  436  ls
+  437  mkdir build && cd build
+  438  cmake -DCMAKE_BUILD_TYPE=Release ..
+  439  make
+  440  pwd
+  441  export PATH=$PATH:/home/gta/TOOL/pti-gpu/tools/onetrace/build
+  442  cd ~/PYG/
+  443  ls
+  444  cd ./pytorch_geometric/benchmark/inference/
+  445  clear
+  446  onetrace -d -h python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --warmup 0
+  447  cd ~/TOOL/
+  448  ls
+  449  cd ./pti-gpu/tools/
+  450  ls
+  451  cd ./oneprof/
+  452  ls
+  453  mkdir build && cd build
+  454  cmake -DCMAKE_BUILD_TYPE=Release ..
+  455  cd ../..
+  456  clear
+  457  git clone --recursive https://github.com/intel/metrics-discovery.git
+  458  sudo apt install libdrm-dev
+  459  ls
+  460  cd ./metrics-discovery/
+  461  mkdir build && cd build
+  462  cmake ..
+  463  make -j20
+  464  sudo make install
+  465  cd ../
+  466  cd ../pti-gpu/
+  467  ls
+  468  cd ./too
+  469  cd ./tools/oneprof/
+  470  ls
+  471  cd ./build/
+  472  rm -r *
+  473  cmake -DCMAKE_BUILD_TYPE=Release ..
+  474  make
+  475  rm -r *
+  476  yes | rm -r *
+  477  cd ../..
+  478  cd ../
+  479  cd ..
+  480  ls
+  481  git clone --recursive https://github.com/intel/metrics-library.git
+  482  cd ./metrics-library/
+  483  mkdir build && cd build
+  484  cmake ..
+  485  make -j20
+  486  ls
+  487  cd ..
+  488  ls
+  489  ls dump/
+  490  ls
+  491  ls dump/linux64/
+  492  ls dump/linux64/release/
+  493  ls dump/linux64/release/metrics_library/
+  494  cd ./build/
+  495  make install
+  496  sudo make install
+  497  cd ~/TOOL/pti-gpu/tools/oneprof/
+  498  ls
+  499  cd ./build/
+  500  ls
+  501  cmake -DCMAKE_BUILD_TYPE=Release ..
+  502  make -j2
+  503  pwd
+  504  export PATH=$PATH:/home/gta/TOOL/pti-gpu/tools/oneprof/build
+  505  cd ~/PYG/pytorch_geometric/benchmark/inference/
+  506  clear
+  507  oneprof -m python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --warmup 0
+  508  ls
+  509  oneprof -i python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --warmup 0
+  510  ls
+  511  rm data* result*
+  512  ls
+  513  oneprof -k python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --warmup 0
+  514  ls
+  515  rm data* result*
+  516  clear
+  517  ls
+  518  pwd
+  519  which python
+  520  clear
+  521  /opt/intel/oneapi/vtune/latest/bin64/vtune --collect gpu-hotspots -knob sampling-mode=hw -knob enable-stack-collection=true -knob stack-size=2048 --app-working-dir=/home/gta/PYG/pytorch_geometric/benchmark/inference -- /home/gta/anaconda3/envs/ipex/bin/python /home/gta/PYG/pytorch_geometric/benchmark/inference/inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  522  /opt/intel/oneapi/vtune/latest/bin64/vtune --collect gpu-hotspots -knob sampling-mode=hw -knob stack-size=2048 --app-working-dir=/home/gta/PYG/pytorch_geometric/benchmark/inference -- /home/gta/anaconda3/envs/ipex/bin/python /home/gta/PYG/pytorch_geometric/benchmark/inference/inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  523  /opt/intel/oneapi/vtune/latest/bin64/vtune --collect gpu-hotspots -knob stack-size=2048 --app-working-dir=/home/gta/PYG/pytorch_geometric/benchmark/inference -- /home/gta/anaconda3/envs/ipex/bin/python /home/gta/PYG/pytorch_geometric/benchmark/inference/inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  524  /opt/intel/oneapi/vtune/latest/bin64/vtune --collect gpu-hotspots --app-working-dir=/home/gta/PYG/pytorch_geometric/benchmark/inference -- /home/gta/anaconda3/envs/ipex/bin/python /home/gta/PYG/pytorch_geometric/benchmark/inference/inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  525  cat /proc/sys/dev/i915/perf_stream_paranoid
+  526  sudo sh -c 'echo 0 >/proc/sys/dev/i915/perf_stream_paranoid'
+  527  cat /proc/sys/kernel/perf_event_paranoid
+  528  sudo sh -c 'echo 1 >/proc/sys/kernel/perf_event_paranoid'
+  529  cat /proc/sys/kernel/kptr_restrict
+  530  sudo sh -c 'echo 0 >/proc/sys/kernel/kptr_restrict'
+  531  clear
+  532  /opt/intel/oneapi/vtune/latest/bin64/vtune --collect gpu-hotspots --app-working-dir=/home/gta/PYG/pytorch_geometric/benchmark/inference -- /home/gta/anaconda3/envs/ipex/bin/python /home/gta/PYG/pytorch_geometric/benchmark/inference/inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  533  ls
+  534  rm -r r000gh-bad/
+  535  rm pin.log 
+  536  clear
+  537  ls
+  538  cd ..
+  539  clear
+  540  ls
+  541  cd ./pytorch_geometric/benchmark/inference/
+  542  clear
+  543  ls
+  544  clear
+  545  ze_trace -d -h python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  546  ze_tracer -d -h python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  547  sudo /etc/environment.d/
+  548  sudo vim /etc/environment
+  549  cat << 'EOF' | sudo tee -a /etc/environment
+  550  http_proxy="http://proxy-dmz.intel.com:911"
+  551  https_proxy="http://proxy-dmz.intel.com:912"
+  552  ftp_proxy="$http_proxy"
+  553  no_proxy="intel.com,.intel.com,localhost,127.0.0.1,/var/run/docker.sock"
+  554  socks_proxy="http://proxy-dmz.intel.com:1080"
+  555  all_proxy="http://proxy-dmz.intel.com:911"
+  556  rsync_proxy="http://proxy-dmz.intel.com:911"
+  557  HTTP_PROXY="$http_proxy"
+  558  HTTPS_PROXY="$https_proxy"
+  559  FTP_PROXY="$ftp_proxy"
+  560  SOCKS_PROXY="$socks_proxy"
+  561  NO_PROXY="$no_proxy"
+  562  SOCKS_PROXY="$socks_proxy"
+  563  ALL_PROXY="$all_proxy"
+  564  RSYNC_PROXY="$rsync_proxy"
+  565  EOF
+  566  sudo vim /etc/environment
+  567  clear
+  568  source /opt/intel/oneapi/setvars.sh 
+  569  source anaconda3/bin/activate 
+  570  conda activate ipex
+  571  cd ./PYG/pytorch_geometric/benchmark/inference/
+  572  clear
+  573  python inference_benchmark.py --device xpu --datasets ogbn-products
+  574  cd ../..
+  575  ls
+  576  ls da
+  577  ls data/
+  578  yes | rm -r data/ogbn-products/
+  579  exit
+  580  clear
+  581  source /opt/intel/oneapi/setvars.sh 
+  582  source anaconda3/bin/activate 
+  583  conda activate ipex
+  584  cd ./PYG/pytorch_geometric/benchmark/inference/
+  585  clear
+  586  python inference_benchmark.py --device xpu --datasets ogbn-products
+  587  python inference_benchmark.py --device xpu --datasets ogbn-mag --models rgcn
+  588  clear
+  589  ls
+  590  sudo apt install numactl
+  591  sudo apt install tmux
+  592  clear
+  593  ls
+  594  vim run.sh
+  595  git branch 
+  596  git checkout master
+  597  git pull
+  598  git checkout try-improve-inference-loop 
+  599  git pull
+  600  git log
+  601  vim inference_benchmark.py 
+  602  vim run.sh 
+  603  python inference_benchmark.py --device xpu --datasets Reddit --models pna --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  604  python inference_benchmark.py --device xpu --datasets Reddit --models pna --eval-batch-sizes 4096 --num-layers 2 --num-hidden-channels 128
+  605  clear
+  606  vim run.sh 
+  607  python inference_benchmark.py --device xpu --datasets ogbn-products --models pna --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128
+  608  vim inference_benchmark.py 
+  609  vim ../utils/utils.py 
+  610  vim ../utils/hetero_gat.py 
+  611  vim inference_benchmark.py 
+  612  vim run.sh 
+  613  clear
+  614  vim inference_benchmark.py 
+  615  python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 1 --num-hidden-channels 128
+  616  ls
+  617  vim inference_benchmark.py 
+  618  python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 1 --num-hidden-channels 128 --reuse-device-for-embeddings
+  619  vim run.py
+  620  python run.py 
+  621  vim run.py 
+  622  rm run.py 
+  623  git status
+  624  git diff
+  625  git stash
+  626  clear
+  627  ls
+  628  rm custom.pt default.pt 
+  629  ls
+  630  vim inference_benchmark.py 
+  631  clear
+  632  exit
+  633  tmux new
+  634  cd ./PYG/pytorch_geometric/benchmark/inference/
+  635  clear
+  636  source /opt/intel/oneapi/setvars.sh 
+  637  source ~/anaconda3/bin/activate 
+  638  conda activate ipex
+  639  clear
+  640  source run.sh > default.log
+  641  ls
+  642  rm default.log 
+  643  vim run.sh 
+  644  source run.sh > default.log
+  645  ls
+  646  rm default.log 
+  647  cd ~/
+  648  ls
+  649  exit
+  650  tmux a -t 0
+  651  clear
+  652  ls
+  653  cd ./PYG
+  654  ls
+  655  cd ./pytorch_geometric/
+  656  ls
+  657  yes | rm -r data
+  658  ls
+  659  cd ..
+  660  ls
+  661  cd ..
+  662  ls
+  663  mkdir PYG_2.0
+  664  cd ./PYG_2.0/
+  665  clear
+  666  ls ../PYG
+  667  cd ..
+  668  ls
+  669  mkdir IPEX_2.0
+  670  ls intel/
+  671  clear
+  672  ls
+  673  cd ./IPEX_2.0/
+  674  source ~/anaconda3/bin/activate 
+  675  conda info --envs
+  676  conda activate ipex
+  677  python --version
+  678  conda deactivate
+  679  conda create --name ipex-v2.0 python=.310
+  680  conda create --name ipex-v2.0 python=3.10
+  681  conda info --envs
+  682  exit
+  683  clear
+  684  ls
+  685  source anaconda3/bin/activate 
+  686  conda create --name ipex-v2.0 python=3.10
+  687  conda activate ipex-v2.0
+  688  python -m pip list
+  689  clear
+  690  ls
+  691  cd ./IPEX_2.0/
+  692  ls
+  693  export VER_LLVM="llvmorg-13.0.0"
+  694  export VER_PYTORCH="v2.0.1"
+  695  python -m pip install cmake astunparse numpy ninja pyyaml mkl-static mkl-include setuptools cffi typing_extensions future six requests dataclasses Pillow
+  696  git clone https://github.com/llvm/llvm-project.git
+  697  git clone https://github.com/pytorch/pytorch.git
+  698  git clone https://github.com/intel/intel-extension-for-pytorch.git
+  699  cd ./llvm-project/
+  700  git checkout llvmorg-13.0.0
+  701  git submodule sync
+  702  git submodule update --init --recursive
+  703  cd ../pytorch/
+  704  git checkout v2.0.1
+  705  git submodule sync
+  706  git submodule update --init --recursive
+  707  cd ..
+  708  cd ./intel-extension-for-pytorch/
+  709  git checkout v2.0.110+xpu
+  710  git submodule sync
+  711  git submodule update --init --recursive
+  712  cd ../llvm-project/
+  713  mkdir build && cd build
+  714  cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-D_GLIBCXX_USE_CXX11_ABI=1" -DLLVM_TARGETS_TO_BUILD=X86 -DLLVM_ENABLE_TERMINFO=OFF -DLLVM_INCLUDE_TESTS=OFF -DLLVM_INCLUDE_EXAMPLES=OFF ../llvm/
+  715  cmake --build . -j 32
+  716  LLVM_ROOT="$(pwd)/../release"
+  717  cmake -DCMAKE_INSTALL_PREFIX=${LLVM_ROOT}/../release/ -P cmake_install.cmake
+  718  ln -s ${LLVM_ROOT}/bin/llvm-config ${LLVM_ROOT}/bin/llvm-config-13
+  719  export PATH=${LLVM_ROOT}/bin:$PATH
+  720  export LD_LIBRARY_PATH=${LLVM_ROOT}/lib:$LD_LIBRARY_PATH
+  721  cd ../../pytorch/
+  722  git stash
+  723  git clean -f
+  724  git apply ../intel-extension-for-pytorch/torch_patches/*.patch
+  725  mv version.txt version.txt.bk
+  726  echo "2.0.1a0" > version.txt
+  727  export USE_LLVM=${LLVM_ROOT}
+  728  export LLVM_DIR=${USE_LLVM}/lib/cmake/llvm
+  729  export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname $(command -v conda))/../"}
+  730  export USE_STATIC_MKL=1
+  731  export _GLIBCXX_USE_CXX11_ABI=1
+  732  export USE_NUMA=0
+  733  export USE_CUDA=0
+  734  python setup.py clean
+  735  python setup.py bdist_wheel 2>&1 | tee build.log
+  736  unset USE_CUDA
+  737  unset USE_NUMA
+  738  unset _GLIBCXX_USE_CXX11_ABI
+  739  unset USE_STATIC_MKL
+  740  unset CMAKE_PREFIX_PATH
+  741  unset LLVM_DIR
+  742  unset USE_LLVM
+  743  mv version.txt.bk version.txt
+  744  python -m pip uninstall -y mkl-static mkl-include
+  745  python -m pip install --force-reinstall dist/*.whl
+  746  cd ../intel-extension-for-pytorch/
+  747  source /opt/intel/oneapi/setvars.sh 
+  748  source /opt/intel/oneapi/mkl/latest/env/vars.sh 
+  749  source /opt/intel/oneapi/compiler/latest/env/vars.sh 
+  750  clear
+  751  python -m pip install -r requirements.txt
+  752  export USE_AOT_DEVLIST=pvc
+  753  export USE_LLVM=${LLVM_ROOT}
+  754  export LLVM_DIR=${USE_LLVM}/lib/cmake/llvm
+  755  export DNNL_GRAPH_BUILD_COMPILER_BACKEND=1
+  756  python setup.py clean
+  757  python setup.py bdist_wheel 2>&1 | tee build.log
+  758  unset DNNL_GRAPH_BUILD_COMPILER_BACKEND
+  759  unset LLVM_DIR
+  760  unset USE_LLVM
+  761  unset USE_AOT_DEVLIST
+  762  python -m pip install --force-reinstall dist/*.whl
+  763  cd ..
+  764  python -c "import torch; import torchvision; import torchaudio; import intel_extension_for_pytorch as ipex; print(f'torch_cxx11_abi:     {torch.compiled_with_cxx11_abi()}'); print(f'torch_version:       {torch.__version__}'); print(f'torchvision_version: {torchvision.__version__}'); print(f'torchaudio_version:  {torchaudio.__version__}'); print(f'ipex_version:        {ipex.__version__}');"
+  765  python
+  766  clear
+  767  cd ../PYG_2.0/
+  768  ls
+  769  git clone --recursive git@github.com:pyg-team/pyg-lib.git
+  770  ls
+  771  clear
+  772  git clone --recursive https://github.com/pyg-team/pyg-lib.git
+  773  cd ./pyg-lib/
+  774  python -m pip install -e .
+  775  cd ..
+  776  git clone --recursive https://github.com/rusty1s/pytorch_scatter.git
+  777  cd ./pytorch_scatter/
+  778  python -m pip install -e .
+  779  cd ..
+  780  git clone --recursive https://github.com/rusty1s/pytorch_sparse.git
+  781  cd ./pytorch_sparse/
+  782  python -m pip install -e .
+  783  cd ..
+  784  git clone https://github.com/snap-stanford/ogb.git
+  785  cd ./ogb/
+  786  python -m pip install -e .
+  787  cd ..
+  788  git clone https://github.com/DamianSzwichtenberg/pytorch_geometric.git
+  789  yes | rm -r pytorch_geometric/
+  790  git clone https://github.com/DamianSzwichtenberg/pytorch_geometric.git --branch try-improve-inference-loop
+  791  cd ./pytorch_geometric/
+  792  ls
+  793  python -m pip install -e .
+  794  cd ./benchmark/
+  795  python -m pip install -e .
+  796  cd ./inference/
+  797  python --datasets Reddit
+  798  python inference_benchmark.py --datasets Reddit
+  799  python inference_benchmark.py --datasets ogbn-products
+  800  python inference_benchmark.py --datasets ogbn-mag
+  801  clear
+  802  cp ~/PYG/pytorch_geometric/benchmark/inference/run.sh .
+  803  ls
+  804  python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  805  clear
+  806  ls
+  807  c
+  808  clear
+  809  git branch 
+  810  git checkout -b try-improve-inference-loop-backup
+  811  git brna
+  812  git branch 
+  813  git log
+  814  git reset HEAD~1
+  815  git log
+  816  git stash
+  817  cd ../..
+  818  python -m pip install -e .
+  819  cd ./benchmark/
+  820  python -m pip install -e .
+  821  cd ./inference/
+  822  clear
+  823  export OMP_PROC_BIND=spread
+  824  export OMP_PLACES=threads
+  825  export OMP_NUM_THREADS=32
+  826  numactl --membind 0 --cpunodebind 0 python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  827  vim inference_benchmark.py 
+  828  numactl --membind 0 --cpunodebind 0 python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  829  vim run.py
+  830  python run.py 
+  831  vim run.py
+  832  python run.py 
+  833  vim run.py
+  834  vim inference_benchmark.py 
+  835  numactl --membind 0 --cpunodebind 0 python inference_benchmark.py --device xpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  836  git stash
+  837  git branch 
+  838  git checkout try-improve-inference-loop
+  839  git log
+  840  cd ../..
+  841  clear
+  842  git status
+  843  rm benchmark/inference/run.py 
+  844  python -m pip install -e .
+  845  cd ./benchmark/
+  846  python -m pip install -e .
+  847  cd ./inference/
+  848  clear
+  849  vim inference_benchmark.py 
+  850  clear
+  851  source run.sh > default.log
+  852  ls
+  853  vim default.log 
+  854  vim inference_benchmark.py 
+  855  git log
+  856  clear
+  857  source run.sh > custom.log
+  858  vimdiff default.log custom.log 
+  859  clear
+  860  python inference_benchmark.py --device cpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  861  vim inference_benchmark.py 
+  862  python inference_benchmark.py --device cpu --datasets Reddit --models gcn --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  863  clear
+  864  ls
+  865  cat run.sh 
+  866  vimdiff default.log custom.log 
+  867  export OMP_PROC_BIND=spread
+  868  export OMP_PLACES=threads
+  869  export OMP_NUM_THREADS=32
+  870  numactl --membind 0 --cpunodebind 0  python inference_benchmark.py --device xpu --datasets ogbn-products --models sage --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  871  vim inference_benchmark.py 
+  872  cd ~/TOOL/
+  873  ls
+  874  cd ./pti-gpu/tools/ze_tracer/build/
+  875  pwd
+  876  export PATH=$PATH:/home/gta/TOOL/pti-gpu/tools/ze_tracer/build
+  877  clear
+  878  cd ~/PYG_2.0/pytorch_geometric/benchmark/inference/
+  879  clear
+  880  ls
+  881  numactl --membind 0 --cpunodebind 0  python inference_benchmark.py --device xpu --datasets ogbn-products --models sage --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings --profile
+  882  ls
+  883  mv profile-sage-ogbn-products-8192-2-128-\[10\,\ 10\].json default-pt.json
+  884  ls
+  885  ze_tracer -d -h -v numactl --membind 0 --cpunodebind 0  python inference_benchmark.py --device xpu --datasets ogbn-products --models sage --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  886  conda install -c conda-forge libstdcxx-ng=12
+  887  conda install -c conda-forge libstdcxx-ng
+  888  ze_tracer -d -h -v numactl --membind 0 --cpunodebind 0  python inference_benchmark.py --device xpu --datasets ogbn-products --models sage --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  889  ze_tracer -d -h -val numactl --membind 0 --cpunodebind 0  python inference_benchmark.py --device xpu --datasets ogbn-products --models sage --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  890  ze_tracer --chrome-device-timeline numactl --membind 0 --cpunodebind 0  python inference_benchmark.py --device xpu --datasets ogbn-products --models sage --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  891  mv zet_trace.93992.json profile-ze.json
+  892  ls
+  893  rm zet_trace.940*
+  894  ls
+  895  mv profile-ze.json default-ze.json
+  896  vim inference_benchmark.py 
+  897  numactl --membind 0 --cpunodebind 0  python inference_benchmark.py --device xpu --datasets ogbn-products --models sage --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings --profile
+  898  ls
+  899  mv profile-sage-ogbn-products-8192-2-128-\[10\,\ 10\].json custom-pt.json
+  900  ze_tracer --chrome-device-timeline numactl --membind 0 --cpunodebind 0  python inference_benchmark.py --device xpu --datasets ogbn-products --models sage --eval-batch-sizes 8192 --num-layers 2 --num-hidden-channels 128 --reuse-device-for-embeddings
+  901  mv zet_trace.94212.json custom-ze.json
+  902  rm zet_trace.942*
+  903  clear
+  904  ls
+  905  rm custom-pt.json custom.log default-pt.json default-ze.json custom-ze.json 
+  906  ls
+  907  rm default.log 
+  908  clear
+  909  cd ~/IPEX_2.0/
+  910  ls
+  911  cd ./intel-extension-for-pytorch/
+  912  grep -rn non_blocking=True
+  913  vim tests/gpu/examples/test_copy.py 
+  914  clear
+  915  source /opt/intel/oneapi/setvars.sh 
+  916  source anaconda3/bin/activate 
+  917  conda activate ipex-v2.0
+  918  cd ./IPEX_2.0/
+  919  ls
+  920  git clone --recursive https://github.com/intel/torch-ccl.git
+  921  cd ./torch-ccl/
+  922  COMPUTE_BACKEND=dpcpp python setup.py install
+  923  ls
+  924  cd ./tests/
+  925  ls
+  926  vim ddp_allreduce.py 
+  927  mpirun -np 2 -ppn 2 python ddp_allreduce.py --warm 10 --iter 20 --fixed
+  928  source $(python -c "import oneccl_bindings_for_pytorch as torch_ccl;print(torch_ccl.cwd)")/env/setvars.sh
+  929  mpirun -np 2 -ppn 2 python ddp_allreduce.py --warm 10 --iter 20 --fixed
+  930  vim ddp_allreduce.py 
+  931  python
+  932  clear
+  933  ls
+  934  cd ~/PYG_2.0/
+  935  ls
+  936  cd ./pytorch_geometric/
+  937  clear
+  938  ls
+  939  git pull --all
+  940  git checkout xpu-2-tiles 
+  941  git stash
+  942  git checkout xpu-2-tiles 
+  943  clear
+  944  git log
+  945  clear
+  946  ls
+  947  cd ./examples/multi_gpu/
+  948  ls
+  949  vim distributed_sampling_xpu.py 
+  950  python distributed_sampling_xpu.py 
+  951  vim ~/IPEX_2.0/torch-ccl/tests/ddp_allreduce.py 
+  952  vim ~/IPEX_2.0/intel-extension-for-pytorch/intel_extension_for_pytorch/xpu/single_card.py 
+  953  WORLD_SIZE=2 python distributed_sampling_xpu.py 
+  954  vim ~/IPEX_2.0/intel-extension-for-pytorch/intel_extension_for_pytorch/xpu/single_card.py 
+  955  git diff
+  956  clear
+  957  python distributed_sampling_xpu.py 
+  958  CCL_ZE_IPC_EXCHANGE=sockets python distributed_sampling_xpu.py 
+  959  vim distributed_sampling_xpu.py 
+  960  CCL_ZE_IPC_EXCHANGE=sockets python distributed_sampling_xpu.py 
+  961  CCL_ATL_TRANSPORT=mpi CCL_ZE_IPC_EXCHANGE=sockets python distributed_sampling_xpu.py 
+  962  \
+  963  python distributed_sampling_xpu.py 
+  964  CCL_ZE_IPC_EXCHANGE=sockets python distributed_sampling_xpu.py
+  965  vim distributed_sampling_xpu.py 
+  966  CCL_ZE_IPC_EXCHANGE=sockets python distributed_sampling_xpu.py
+  967  vim distributed_sampling_xpu.py 
+  968  CCL_ZE_IPC_EXCHANGE=sockets python distributed_sampling_xpu.py
+  969  vim ~/IPEX_2.0/
+  970  source /opt/intel/oneapi/setvars.sh 
+  971  source anaconda3/bin/activate 
+  972  conda activate ipex-v2.0
+  973  clear
+  974  ls
+  975  source $(python -c "import oneccl_bindings_for_pytorch as torch_ccl;print(torch_ccl.cwd)")/env/setvars.sh
+  976  ls
+  977  cd ./IPEX_2.0/
+  978  ls
+  979  cd ./torch-ccl/
+  980  ls
+  981  cd ./demo/
+  982  ls
+  983  mpirun -np 2 python demo.py --device xpu
+  984  vim demo.py 
+  985  cd ~/PYG_2.0/pytorch_geometric/examples/multi_gpu/
+  986  ls
+  987  vim distributed_sampling.py 
+  988  clear
+  989  ls
+  990  cp distributed_sampling_xpu.py distributed_sampling_xpu_mpi.py
+  991  vim distributed_sampling_xpu_mpi.py 
+  992  mpirun -np 2 python distributed_sampling_xpu_mpi.py 
+  993  vim distributed_sampling_xpu_mpi.py 
+  994  mpirun -np 2 python distributed_sampling_xpu_mpi.py 
+  995  vim distributed_sampling_xpu_mpi.py 
+  996  clear
+  997  mpirun -np 2 python distributed_sampling_xpu_mpi.py 
+  998  vim distributed_sampling_xpu_mpi.py 
+  999  clear
+ 1000  mpirun -np 2 python distributed_sampling_xpu_mpi.py 
+ 1001  vim distributed_sampling_xpu_mpi.py 
+ 1002  mpirun -np 2 python distributed_sampling_xpu_mpi.py 
+ 1003  cd ~/IPEX_2.0/torch-ccl/demo/
+ 1004  mpirun -np 2 python demo.py 
+ 1005  top
+ 1006  clear
+ 1007  mpirun -np 2 python demo.py 
+ 1008  sudo reboot
+ 1009  source /opt/intel/oneapi/setvars.sh 
+ 1010  source anaconda3/bin/activate 
+ 1011  conda activate ipex-v2.0
+ 1012  clear
+ 1013  ls
+ 1014  cd ./IPEX_2.0/torch-ccl/demo/
+ 1015  mpirun -np 2 python demo.py 
+ 1016  mpirun -np 2 python demo.py --device xpu
+ 1017  source $(python -c "import oneccl_bindings_for_pytorch as torch_ccl;print(torch_ccl.cwd)")/env/setvars.sh
+ 1018  mpirun -np 2 python demo.py --device xpu
+ 1019  clear
+ 1020  ls
+ 1021  cd ~/
+ 1022  ls
+ 1023  cd ./IPEX_2.0/
+ 1024  ls
+ 1025  cd ../PYG_2.0/
+ 1026  ls
+ 1027  cd ./pytorch_geometric/examples/multi_gpu/
+ 1028  ls
+ 1029  vim papers100m_multigpu.py 
+ 1030  vim distributed_batching.py 
+ 1031  cd ..
+ 1032  ls
+ 1033  cd ..
+ 1034  ls
+ 1035  cd ./examples/multi_gpu/
+ 1036  ls
+ 1037  ls data_parallel.py 
+ 1038  cat data_parallel.py 
+ 1039  ls
+ 1040  cat distributed_batching.py 
+ 1041  ls
+ 1042  cat distributed_sampling.py 
+ 1043  ls
+ 1044  cat papers100m_multigpu.py 
+ 1045  ls
+ 1046  cat taobao_multigpu_large.py 
+ 1047  clear
+ 1048  cd ..
+ 1049  ls
+ 1050  vim ogbn_products_gat.py 
+ 1051  exit
+ 1052  git status
+ 1053  git stash
+ 1054  git checkout master
+ 1055  git pull
+ 1056  git clone https://github.com/snap-stanford/relbench
+ 1057  https://github.com/pyg-team/pytorch-frame.git
+ 1058  git clone https://github.com/pyg-team/pytorch-frame.git
+ 1059  python -m pip install --verbose -e .
+ 1060  USE_CUDA=false python -m pip install --verbose -e .
+ 1061  python gnn_node.py 
+ 1062  pip install --upgrade modin
+ 1063  python gnn_node.py 
+ 1064  pip install "modin[all]"
+ 1065  python gnn_node.py 
+ 1066  python
+ 1067  python gnn_node.py 
+ 1068  git clone https://github.com/duckdb/duckdb.git
+ 1069  python gnn_node.py 
+ 1070  git diff
+ 1071  python gnn_node.py 
+ 1072  git status
+ 1073  git remote -v
+ 1074  git remote add my_relbench https://github.com/arlesniak/relbench.git
+ 1075  git status
+ 1076  git checkout -b arlesniak/modin_prepare
+ 1077  git add gnn_node.py ../relbench/data/database.py ../relbench/data/dataset.py ../relbench/data/table.py ../relbench/data/task_base.py ../relbench/data/task_node.py ../relbench/datasets/stackex.py ../relbench/tasks/stackex.py 
+ 1078  history > h

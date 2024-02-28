@@ -5,7 +5,8 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Dict, Optional, Tuple, Union
 
-import pandas as pd
+# import pandas as pd
+import modin.pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 from typing_extensions import Self

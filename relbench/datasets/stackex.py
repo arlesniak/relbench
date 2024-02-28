@@ -1,7 +1,9 @@
 import os
 
-import pandas as pd
+#import pandas as pd
 import pooch
+import modin.pandas as pd
+import time
 
 from relbench.data import Database, RelBenchDataset, Table
 from relbench.tasks.stackex import (
@@ -39,6 +41,7 @@ class StackExDataset(RelBenchDataset):
             processor=unzip_processor,
         )
         path = os.path.join(path, "raw")
+        t = time.time()
         users = pd.read_csv(os.path.join(path, "Users.csv"))
         comments = pd.read_csv(os.path.join(path, "Comments.csv"))
         posts = pd.read_csv(os.path.join(path, "Posts.csv"))
@@ -46,7 +49,7 @@ class StackExDataset(RelBenchDataset):
         postLinks = pd.read_csv(os.path.join(path, "PostLinks.csv"))
         badges = pd.read_csv(os.path.join(path, "Badges.csv"))
         postHistory = pd.read_csv(os.path.join(path, "PostHistory.csv"))
-
+        print("orig time=", time.time() -t)
         # tags = pd.read_csv(os.path.join(path, "Tags.csv")) we remove tag table here since after removing time leakage columns, all information are kept in the posts tags columns
 
         ## remove time leakage columns
